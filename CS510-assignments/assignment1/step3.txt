@@ -1,0 +1,12 @@
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Mar 23 2020 14:17:48
+gem5 started Apr 17 2020 13:39:15
+gem5 executing on workstation, pid 11769
+command line: build/X86/gem5.opt configs/tutorial/two_level.py --l2_size=256kB --l1d_size=64kB --l1i_size=16kB
+
+Global frequency set at 1000000000000 ticks per second
+Begin simulation
+Hello world!
+Exiting @ tick 56435000 because exiting with last active thread context
