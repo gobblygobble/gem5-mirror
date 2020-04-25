@@ -1,0 +1,5 @@
+SUBD    T9, T2, T3
+ADDD    T10, T9, T2
+MULTD   T11, T10, T9
+DIVD    T12, T2, T6
+

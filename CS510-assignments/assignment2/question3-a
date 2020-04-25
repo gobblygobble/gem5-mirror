@@ -1,0 +1,8 @@
+LD      T9, 0(Rx)
+MULTD   T10, F0, F2
+DIVD    T11, T9, T10
+LD      T12, 0(Ry)
+ADDD    T13, F0, T12
+SUBD    T14, T11, T13
+SD      T14, 0(Ry)
+
