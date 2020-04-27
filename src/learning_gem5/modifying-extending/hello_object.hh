@@ -11,3 +11,4 @@ class HelloObject : public SimObject
 };
 
 #endif // __LEARNING_GEM5_HELLO_OBJECT_HH__
+

@@ -1,4 +1,4 @@
-#include "learning_gem5/hello_object.hh"
+#include "learning_gem5/modifying-extending/hello_object.hh"
 
 #include <iostream>
 
@@ -13,3 +13,4 @@ HelloObjectParams::create()
 {
     return new HelloObject(this);
 }
+

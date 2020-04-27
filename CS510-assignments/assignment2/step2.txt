@@ -1,9 +1,12 @@
 gem5 Simulator System.  http://gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
-gem5 compiled Apr 25 2020 14:57:01
-gem5 started Apr 25 2020 15:00:52
-gem5 executing on workstation, pid 4270
-command line: build/X86/gem5.opt configs/learning_gem5/modifying-extending/simple_script.py
+gem5 compiled Apr 27 2020 13:41:44
+gem5 started Apr 27 2020 13:53:57
+gem5 executing on workstation, pid 1490
+command line: build/X86/gem5.opt configs/learning_gem5/modifying-extending/run_hello.py
 
 Global frequency set at 1000000000000 ticks per second
+Hello World! From a SimObject!
+Beginning simulation!
+Exiting @ tick 18446744073709551615 because simulate() limit reached
