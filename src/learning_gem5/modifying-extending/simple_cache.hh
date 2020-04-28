@@ -68,8 +68,9 @@ class SimpleCache : public ClockedObject
         bool blocked;
         PacketPtr outstandingPacket;
         int waitingPortId;
-        Tick missTime;
         std::unordered_map<Addr, uint8_t*> cacheStore;
+        // track miss latency
+        Tick missTime;
         // cache statistics
         Stats::Scalar hits;
         Stats::Scalar misses;

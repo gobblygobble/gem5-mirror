@@ -73,9 +73,12 @@ SimpleCache::accessTiming(PacketPtr pkt)
 {
     bool hit = accessFunctional(pkt);
     if (hit) {
+        hits++;
         pkt->makeResponse();
         sendResponse(pkt);
     } else {
+        misses++;
+        missTime = curTick();
         Addr addr = pkt->getAddr();
         Addr block_addr = pkt->getBlockAddr(blockSize);
         unsigned size = pkt->getSize();
@@ -124,6 +127,9 @@ SimpleCache::handleResponse(PacketPtr pkt)
     assert(blocked);
     DPRINTF(SimpleCache, "Got response for addr %#x\n", pkt->getAddr());
     insert(pkt);
+
+    // get stats
+    missLatency.sample(curTick() - missTime);
 
     if (outstandingPacket != nullptr) {
         accessFunctional(outstandingPacket);
