@@ -1,0 +1,12 @@
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Apr 29 2020 03:21:56
+gem5 started Apr 29 2020 03:24:04
+gem5 executing on workstation, pid 27040
+command line: build/X86/gem5.opt configs/learning_gem5/modifying-extending/simple_cache.py
+
+Global frequency set at 1000000000000 ticks per second
+Beginning simulation!
+Hello world!
+Exiting @ tick 52209000 because exiting with last active thread context

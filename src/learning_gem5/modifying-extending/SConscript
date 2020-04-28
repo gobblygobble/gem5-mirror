@@ -1,6 +1,6 @@
 Import('*')
 
-SimObject('SimpleMemobj.py')
-Source('simple_memobj.cc')
+SimObject('SimpleCache.py')
+Source('simple_cache.cc')
 
-DebugFlag('SimpleMemobj')
+DebugFlag('SimpleCache')
