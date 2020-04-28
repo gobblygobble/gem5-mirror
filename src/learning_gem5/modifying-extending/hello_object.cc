@@ -1,20 +1,23 @@
 #include "learning_gem5/modifying-extending/hello_object.hh"
 #include "debug/Hello.hh"
 
-//#include <iostream>
-
 HelloObject::HelloObject(HelloObjectParams *params) :
-    SimObject(params), event([this]{processEvent();}, name()),
-    latency(100), timesLeft(10)
+    SimObject(params),
+    event([this]{processEvent();}, name()),
+    //event(*this),
+    goodbye(params->goodbye_object),
+    myName(params->name),
+    latency(params->time_to_wait),
+    timesLeft(params->number_of_fires)
 {
     //std::cout << "Hello World! From a SimObject!" << std::endl;
-    DPRINTF(Hello, "Created the hello object\n");
+    DPRINTF(Hello, "Created the hello object with the name %s\n", myName);
+    panic_if(!goodbye, "HelloObject must have a non-null GoodbyeObject");
 }
 
-HelloObject*
-HelloObjectParams::create()
+void HelloObject::startup()
 {
-    return new HelloObject(this);
+    schedule(event, latency);
 }
 
 void
@@ -25,13 +28,15 @@ HelloObject::processEvent()
 
     if (timesLeft <= 0) {
         DPRINTF(Hello, "Done firing!\n");
+        goodbye->sayGoodbye(myName);
     }
     else {
         schedule(event, curTick() + latency);
     }
 }
 
-void HelloObject::startup()
+HelloObject*
+HelloObjectParams::create()
 {
-    schedule(event, 100);
+    return new HelloObject(this);
 }

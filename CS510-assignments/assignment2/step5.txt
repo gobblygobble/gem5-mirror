@@ -1,0 +1,33 @@
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Apr 28 2020 15:58:30
+gem5 started Apr 28 2020 15:59:35
+gem5 executing on workstation, pid 22659
+command line: build/X86/gem5.opt --debug-flags=Hello configs/learning_gem5/modifying-extending/run_hello.py
+
+Global frequency set at 1000000000000 ticks per second
+      0: hello.goodbye_object: Created the goodbye object
+      0: hello: Created the hello object with the name hello
+Beginning simulation!
+2000000: hello: Hello world! Processing the event! 4 left
+4000000: hello: Hello world! Processing the event! 3 left
+6000000: hello: Hello world! Processing the event! 2 left
+8000000: hello: Hello world! Processing the event! 1 left
+10000000: hello: Hello world! Processing the event! 0 left
+10000000: hello: Done firing!
+10000000: hello.goodbye_object: Saying goodbye to hello
+10000000: hello.goodbye_object: Scheduling another fillBuffer in 152592 ticks
+10152592: hello.goodbye_object: Processing the event!
+10152592: hello.goodbye_object: Scheduling another fillBuffer in 152592 ticks
+10305184: hello.goodbye_object: Processing the event!
+10305184: hello.goodbye_object: Scheduling another fillBuffer in 152592 ticks
+10457776: hello.goodbye_object: Processing the event!
+10457776: hello.goodbye_object: Scheduling another fillBuffer in 152592 ticks
+10610368: hello.goodbye_object: Processing the event!
+10610368: hello.goodbye_object: Scheduling another fillBuffer in 152592 ticks
+10762960: hello.goodbye_object: Processing the event!
+10762960: hello.goodbye_object: Scheduling another fillBuffer in 152592 ticks
+10915552: hello.goodbye_object: Processing the event!
+10915552: hello.goodbye_object: Goodbye done copying!
+Exiting @ tick 10944163 because Goodbye hello!! Goodbye hello!! Goodbye hello!! Goodbye hello!! Goodbye hello!! Goodbye hello!! Goo
