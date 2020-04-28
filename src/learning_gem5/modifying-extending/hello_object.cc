@@ -4,7 +4,8 @@
 //#include <iostream>
 
 HelloObject::HelloObject(HelloObjectParams *params) :
-    SimObject(params), event([this]{processEvent();}, name())
+    SimObject(params), event([this]{processEvent();}, name()),
+    latency(100), timesLeft(10)
 {
     //std::cout << "Hello World! From a SimObject!" << std::endl;
     DPRINTF(Hello, "Created the hello object\n");
@@ -19,7 +20,15 @@ HelloObjectParams::create()
 void
 HelloObject::processEvent()
 {
-    DPRINTF(Hello, "Hello world! Processing the event!\n");
+    timesLeft--;
+    DPRINTF(Hello, "Hello world! Processing the event! %d left\n", timesLeft);
+
+    if (timesLeft <= 0) {
+        DPRINTF(Hello, "Done firing!\n");
+    }
+    else {
+        schedule(event, curTick() + latency);
+    }
 }
 
 void HelloObject::startup()

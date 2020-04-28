@@ -11,9 +11,15 @@ class HelloObject : public SimObject
         void processEvent();
         // Event instasnce. EventFunctionWrapper allows us to execute any function
         EventFunctionWrapper event;
+        // latency between calling events (in ticks)
+        Tick latency;
+        // number of times to fire
+        int timesLeft;
+
     public:
         HelloObject(HelloObjectParams *p);
-
+        // part of initialization
+        // called after all SimObjects constructed
         void startup();
 };
 

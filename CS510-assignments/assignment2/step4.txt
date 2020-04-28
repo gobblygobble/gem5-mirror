@@ -1,0 +1,23 @@
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Apr 28 2020 14:46:04
+gem5 started Apr 28 2020 14:47:51
+gem5 executing on workstation, pid 18198
+command line: build/X86/gem5.opt --debug-flags=Hello configs/learning_gem5/modifying-extending/run_hello.py
+
+Global frequency set at 1000000000000 ticks per second
+      0: hello: Created the hello object
+Beginning simulation!
+    100: hello: Hello world! Processing the event! 9 left
+    200: hello: Hello world! Processing the event! 8 left
+    300: hello: Hello world! Processing the event! 7 left
+    400: hello: Hello world! Processing the event! 6 left
+    500: hello: Hello world! Processing the event! 5 left
+    600: hello: Hello world! Processing the event! 4 left
+    700: hello: Hello world! Processing the event! 3 left
+    800: hello: Hello world! Processing the event! 2 left
+    900: hello: Hello world! Processing the event! 1 left
+   1000: hello: Hello world! Processing the event! 0 left
+   1000: hello: Done firing!
+Exiting @ tick 18446744073709551615 because simulate() limit reached
