@@ -405,6 +405,8 @@ def addSEOptions(parser):
                            "to be used in syscall emulation."
                            "Usage: gem5.opt [...] --redirects /dir1=/path/"
                            "to/host/dir1 --redirects /dir2=/path/to/host/dir2")
+    parser.add_option("-b", "--benchmark", default="",
+                      help="The benchmark to be loaded.")
 
 
 

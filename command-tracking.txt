@@ -1,0 +1,20 @@
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf
+--> works, no cache though --> give more options or sth to make it cache
+
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type=AtomicSimpleCPU
+--> in-order, cache 無 model (30min)
+
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type="AtomicSimpleCPU" --caches
+--> in-order, cache 有 model
+
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type="DerivO3CPU"
+--> out-of-order, 無 model --> OoO needs cache, especially I&D separated --> INVALID OPTION
+
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type=DerivO3CPU --caches
+--> out-of-order, cache 有 model, takes 4+ hours (9:23~)
+
+
+====================================== use SE.PY ? ======================================
+
+build/X86/gem5.opt configs/example/se.py --benchmark=mcf --cpu-type="DerivO3CPU"
+--> use se.py to ... "need to specify workload"
