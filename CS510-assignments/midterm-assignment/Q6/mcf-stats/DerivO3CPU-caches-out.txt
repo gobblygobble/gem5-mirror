@@ -1,0 +1,27 @@
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Apr 29 2020 03:34:51
+gem5 started May 13 2020 09:23:32
+gem5 executing on workstation, pid 13419
+command line: build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type=DerivO3CPU --caches
+
+info: Standard input is not a terminal, disabling listeners.
+['/home/jinha/gem5/configs/SPEC2006/SPECCPU2006_binary/mcf/mcf', '/home/jinha/gem5/configs/SPEC2006/SPECCPU2006_input/benchspec/CPU2006/429.mcf/data/test/input/inp.in']
+Global frequency set at 1000000000000 ticks per second
+warn: DRAM device capacity (8192 Mbytes) does not match the address range assigned (512 Mbytes)
+warn: Sockets disabled, not accepting gdb connections
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+warn: ignoring syscall access(...)
+warn: ignoring syscall access(...)
+warn: ignoring syscall access(...)
+warn: ignoring syscall mprotect(...)
+warn: ignoring syscall mprotect(...)
+warn: ignoring syscall mprotect(...)
+warn: ignoring syscall mprotect(...)
+warn: mremapping to new vaddr 0x7fffeb67a000-0x7ffff73d6000, adding 192000000
+warn: returning 0x7fffeb67a000 as start
+warn: mremapping to new vaddr 0x7fffd4203000-0x7fffeb67a000, adding 192000000
+warn: returning 0x7fffd4203000 as start
+Exiting @ tick 11417994446500 because exiting with last active thread context
