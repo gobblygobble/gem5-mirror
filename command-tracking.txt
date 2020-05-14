@@ -1,20 +1,30 @@
+==================================================== BENCHMARK: BZIP2 ====================================================
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=bzip2 --cpu-type="AtomicSimpleCPU" --caches
+--> in-order, cache 有 model (19 min) 16:30~16:49
+
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=bzip2 --cpu-type="DerivO3CPU" --caches
+--> out-of-order, cache 有 model, takes 3.5+ hours (17:00~20:33)
+==========================================================================================================================
+==================================================== BENCHMARK: SJENG ====================================================
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=sjeng --cpu-type="AtomicSimpleCPU" --caches
+--> in-order, cache 有 model () 14:40~16:25+ (ctrl-c)
+
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=sjeng --cpu-type="DerivO3CPU" --caches
+--> out-of-order, cache 有 model, takes  hours ()
+==========================================================================================================================
+===================================================== BENCHMARK: MCF =====================================================
 build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf
 --> works, no cache though --> give more options or sth to make it cache
 
-build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type=AtomicSimpleCPU
---> in-order, cache 無 model (30min)
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type="AtomicSimpleCPU"
+--> in-order, cache 無 model (30 min)
 
 build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type="AtomicSimpleCPU" --caches
---> in-order, cache 有 model
+--> in-order, cache 有 model (? min)
 
 build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type="DerivO3CPU"
 --> out-of-order, 無 model --> OoO needs cache, especially I&D separated --> INVALID OPTION
 
-build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type=DerivO3CPU --caches
---> out-of-order, cache 有 model, takes 4+ hours (9:23~)
-
-
-====================================== use SE.PY ? ======================================
-
-build/X86/gem5.opt configs/example/se.py --benchmark=mcf --cpu-type="DerivO3CPU"
---> use se.py to ... "need to specify workload"
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=mcf --cpu-type="DerivO3CPU" --caches
+--> out-of-order, cache 有 model, takes 14+ hours (9:23~23:28)
+==========================================================================================================================
