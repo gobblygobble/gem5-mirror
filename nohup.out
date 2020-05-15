@@ -1,0 +1,23 @@
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Apr 29 2020 03:34:51
+gem5 started May 16 2020 01:03:53
+gem5 executing on workstation, pid 31699
+command line: build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=bzip2 --cpu-type=DerivO3CPU --caches --l2cache --l1d_size=64kB --l1i_size=32kB --l1d_assoc=4 --l1i_assoc=2 --l2_size=4MB --l2_assoc=8
+
+info: Standard input is not a terminal, disabling listeners.
+['/home/jinha/gem5/configs/SPEC2006/SPECCPU2006_binary/bzip2/bzip2', '/home/jinha/gem5/configs/SPEC2006/SPECCPU2006_binary/bzip2/input.program', '1']
+Global frequency set at 1000000000000 ticks per second
+warn: DRAM device capacity (8192 Mbytes) does not match the address range assigned (512 Mbytes)
+warn: Sockets disabled, not accepting gdb connections
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+warn: ignoring syscall access(...)
+warn: ignoring syscall access(...)
+warn: ignoring syscall access(...)
+warn: ignoring syscall mprotect(...)
+warn: ignoring syscall mprotect(...)
+warn: ignoring syscall mprotect(...)
+warn: ignoring syscall mprotect(...)
+info: Increasing stack size by one page.
