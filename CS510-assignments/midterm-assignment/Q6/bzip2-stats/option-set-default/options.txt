@@ -1,0 +1,4 @@
+commandline:
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=bzip2 --cpu-type="AtomicSimpleCPU" --caches --l2cache --l1d_size="64kB" --l1i_size="32kB" --l1d_assoc=2 --l1i_assoc=2 --l2_size="2MB" --l2_assoc=8
+
+build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=bzip2 --cpu-type="DerivO3CPU" --caches --l2cache --l1d_size="64kB" --l1i_size="32kB" --l1d_assoc=2 --l1i_assoc=2 --l2_size="2MB" --l2_assoc=8
