@@ -122,7 +122,7 @@ def get_processes(options):
 
 
 parser = optparse.OptionParser()
-
+parser.add_option('--l2dtlb_size', type=int)
 
 Options.addCommonOptions(parser)
 Options.addSEOptions(parser)
@@ -367,6 +367,10 @@ else:
     config_filesystem(system, options)
     # add cache?
     
+# hard-coded itb/ dtb size
+system.cpu[i].itb.size = 64
+system.cpu[i].dtb.size = 64
+system.cpu[i].dtb2.size = options.l2dtlb_size
 
 root = Root(full_system = False, system = system)
 Simulation.run(options, root, system, FutureClass)
