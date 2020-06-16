@@ -1,6 +1,10 @@
 ================ PART1: IMPLEMENTING AN L2 DATA TLB ================
-* to run gdb: gdb build/X86/gem5.opt
-* inside gdb: run configs/SPEC2006/spec2006-part1.py --benchmark=soplex --caches --l2dtlb_size=256
+* rebuild for AtomicSimpleCPU:
+    scons build/X86/gem5.opt -j16 CPU_MODELS=AtomicSimpleCPU
+* to run gdb:
+    gdb build/X86/gem5.opt
+* inside gdb:
+    run configs/SPEC2006/speccpu2006-part1.py --benchmark=soplex --caches --l2dtlb_size=256
 ====================================================================
 
 
