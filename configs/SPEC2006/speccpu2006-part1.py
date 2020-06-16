@@ -367,10 +367,13 @@ else:
     config_filesystem(system, options)
     # add cache?
     
-# hard-coded itb/ dtb size
-system.cpu[i].itb.size = 64
+# hard-coded itb / dtb options
+system.cpu[i].itb.size = 6
 system.cpu[i].dtb.size = 64
 system.cpu[i].dtb2.size = options.l2dtlb_size
+system.cpu[i].itb.last_level = True
+system.cpu[i].dtb.last_level = False
+system.cpu[i].dtb2.last_level = True
 
 root = Root(full_system = False, system = system)
 Simulation.run(options, root, system, FutureClass)
