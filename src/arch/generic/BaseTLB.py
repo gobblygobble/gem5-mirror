@@ -38,3 +38,5 @@ class BaseTLB(SimObject):
     # Ports to connect with other TLB levels
     slave  = VectorSlavePort("Port closer to the CPU side")
     master = MasterPort("Port closer to memory side")
+    # modifications for multi-levle TLB
+    last_level = Param.Bool("Is it last level")

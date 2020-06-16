@@ -83,6 +83,10 @@ SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,
 {
     clearArchRegs();
     quiesceEvent = new EndQuiesceEvent(this);
+    // set variables for multi-level TLB
+    itb->last_level = true;
+    dtb->last_level = false;
+    dtb2->last_level = true;
 }
 
 SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,
@@ -94,6 +98,11 @@ SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,
       system(_sys), itb(_itb), dtb(_dtb), dtb2(_dtb2), decoder(TheISA::Decoder(_isa))
 {
     quiesceEvent = new EndQuiesceEvent(this);
+
+    // set variables for multi-level TLB
+    itb->last_level = true;
+    dtb->last_level = false;
+    dtb2->last_level = true;
 
     clearArchRegs();
 

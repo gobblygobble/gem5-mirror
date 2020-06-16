@@ -99,6 +99,7 @@ class BaseTLB : public SimObject
     {
         panic("Not implemented.\n");
     }
+    bool last_level;
 
     /**
      * Do post-translation physical address finalization.
