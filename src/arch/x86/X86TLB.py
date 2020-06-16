@@ -54,7 +54,8 @@ class X86TLB(BaseTLB):
     type = 'X86TLB'
     cxx_class = 'X86ISA::TLB'
     cxx_header = 'arch/x86/tlb.hh'
-    size = Param.Unsigned(64, "TLB size")
+    #size = Param.Unsigned(64, "TLB size")
+    size = Param.Unsigned("TLB size")
     system = Param.System(Parent.any, "system object")
     walker = Param.X86PagetableWalker(\
             X86PagetableWalker(), "page table walker")

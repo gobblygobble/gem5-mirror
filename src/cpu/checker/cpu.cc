@@ -86,6 +86,7 @@ CheckerCPU::CheckerCPU(Params *p)
     warnOnlyOnLoadError = p->warnOnlyOnLoadError;
     itb = p->itb;
     dtb = p->dtb;
+    dtb2 = p->dtb2;
     workload = p->workload;
 
     updateOnError = true;
@@ -103,12 +104,12 @@ CheckerCPU::setSystem(System *system)
     systemPtr = system;
 
     if (FullSystem) {
-        thread = new SimpleThread(this, 0, systemPtr, itb, dtb,
+        thread = new SimpleThread(this, 0, systemPtr, itb, dtb, dtb2,
                                   p->isa[0], false);
     } else {
         thread = new SimpleThread(this, 0, systemPtr,
                                   workload.size() ? workload[0] : NULL,
-                                  itb, dtb, p->isa[0]);
+                                  itb, dtb, dtb2, p->isa[0]);
     }
 
     tc = thread->getTC();

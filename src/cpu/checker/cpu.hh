@@ -136,6 +136,7 @@ class CheckerCPU : public BaseCPU, public ExecContext
 
     BaseTLB *itb;
     BaseTLB *dtb;
+    BaseTLB *dtb2;
 
     Addr dbg_vtophys(Addr addr);
 

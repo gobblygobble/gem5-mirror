@@ -97,10 +97,10 @@ BaseSimpleCPU::BaseSimpleCPU(BaseSimpleCPUParams *p)
     for (unsigned i = 0; i < numThreads; i++) {
         if (FullSystem) {
             thread = new SimpleThread(this, i, p->system,
-                                      p->itb, p->dtb, p->isa[i]);
+                                      p->itb, p->dtb, p->dtb2, p->isa[i]);
         } else {
             thread = new SimpleThread(this, i, p->system, p->workload[i],
-                                      p->itb, p->dtb, p->isa[i]);
+                                      p->itb, p->dtb, p->dtb2, p->isa[i]);
         }
         threadInfo.push_back(new SimpleExecContext(this, thread));
         ThreadContext *tc = thread->getTC();

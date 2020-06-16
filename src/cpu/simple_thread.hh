@@ -138,18 +138,20 @@ class SimpleThread : public ThreadState, public ThreadContext
 
     BaseTLB *itb;
     BaseTLB *dtb;
+    // L2 TLB for part 1 of final project
+    BaseTLB *dtb2;
 
     TheISA::Decoder decoder;
 
     // constructor: initialize SimpleThread from given process structure
     // FS
     SimpleThread(BaseCPU *_cpu, int _thread_num, System *_system,
-                 BaseTLB *_itb, BaseTLB *_dtb, TheISA::ISA *_isa,
-                 bool use_kernel_stats = true);
+                 BaseTLB *_itb, BaseTLB *_dtb, BaseTLB *_dtb2,
+                 TheISA::ISA *_isa, bool use_kernel_stats = true);
     // SE
     SimpleThread(BaseCPU *_cpu, int _thread_num, System *_system,
                  Process *_process, BaseTLB *_itb, BaseTLB *_dtb,
-                 TheISA::ISA *_isa);
+                 BaseTLB *_dtb2, TheISA::ISA *_isa);
 
     virtual ~SimpleThread() {}
 
