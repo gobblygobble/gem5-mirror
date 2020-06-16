@@ -374,6 +374,9 @@ system.cpu[i].dtb2.size = options.l2dtlb_size
 system.cpu[i].itb.last_level = True
 system.cpu[i].dtb.last_level = False
 system.cpu[i].dtb2.last_level = True
+system.cpu[i].itb.upper_tlb = 0
+system.cpu[i].dtb.upper_tlb = 0
+system.cpu[i].dtb2.upper_tlb = 0
 
 root = Root(full_system = False, system = system)
 Simulation.run(options, root, system, FutureClass)
