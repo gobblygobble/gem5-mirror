@@ -100,7 +100,7 @@ class BaseTLB : public SimObject
         panic("Not implemented.\n");
     }
     bool last_level;
-
+    BaseTLB *upper_tlb;
     /**
      * Do post-translation physical address finalization.
      *

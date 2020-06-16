@@ -40,3 +40,4 @@ class BaseTLB(SimObject):
     master = MasterPort("Port closer to memory side")
     # modifications for multi-levle TLB
     last_level = Param.Bool("Is it last level")
+    upper_tlb = Param.UInt64("Pointer to upper level TLB")

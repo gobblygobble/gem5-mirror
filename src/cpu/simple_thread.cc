@@ -87,6 +87,9 @@ SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,
     itb->last_level = true;
     dtb->last_level = false;
     dtb2->last_level = true;
+    itb->upper_tlb = nullptr;
+    dtb->upper_tlb = nullptr;
+    dtb2->upper_tlb = dtb;
 }
 
 SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,

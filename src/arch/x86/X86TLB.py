@@ -56,7 +56,6 @@ class X86TLB(BaseTLB):
     cxx_header = 'arch/x86/tlb.hh'
     # modifications for multi-levle TLB
     #size = Param.Unsigned(64, "TLB size")
-    #last_level = Param.Bool("Is it last level")
     size = Param.Unsigned("TLB size")
     system = Param.System(Parent.any, "system object")
     walker = Param.X86PagetableWalker(\

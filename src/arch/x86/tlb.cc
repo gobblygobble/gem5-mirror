@@ -333,6 +333,13 @@ TLB::translate(const RequestPtr &req,
             } else {
                 wrAccesses++;
             }
+            // entry NOT found in TLB
+            // -> if we are not last_level (dtb), 
+            // return and let lower level handle
+            // TODO: HOW WILL WE PASS THE INFORMATION TO DTB2?
+            if (last_level) {
+                ;
+            }
             if (!entry) {
                 DPRINTF(TLB, "Handling a TLB miss for "
                         "address %#x at pc %#x.\n",
@@ -377,7 +384,7 @@ TLB::translate(const RequestPtr &req,
                     DPRINTF(TLB, "Miss was serviced.\n");
                 }
             }
-
+            // entry found in TLB -> no need to go to lower level
             DPRINTF(TLB, "Entry found with paddr %#x, "
                     "doing protection checks.\n", entry->paddr);
             // Do paging protection checks.
