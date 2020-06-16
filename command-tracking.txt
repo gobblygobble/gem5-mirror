@@ -1,3 +1,9 @@
+================ PART1: IMPLEMENTING AN L2 DATA TLB ================
+* to run gdb: gdb build/X86/gem5.opt
+* inside gdb: run configs/SPEC2006/spec2006-part1.py --benchmark=soplex --caches --l2dtlb_size=256
+====================================================================
+
+
 ==================================================== BENCHMARK: BZIP2 ====================================================
 build/X86/gem5.opt configs/SPEC2006/speccpu2006.py --benchmark=bzip2 --cpu-type="AtomicSimpleCPU" --caches
 --> in-order, cache 有 model (19 min) 16:30~16:49
