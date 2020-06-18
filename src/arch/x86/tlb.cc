@@ -334,12 +334,7 @@ TLB::translate(const RequestPtr &req,
                 wrAccesses++;
             }
             // entry NOT found in TLB
-            // -> if we are not last_level (dtb), 
-            // return and let lower level handle
             // TODO: HOW WILL WE PASS THE INFORMATION TO DTB2?
-            if (last_level) {
-                ;
-            }
             if (!entry) {
                 DPRINTF(TLB, "Handling a TLB miss for "
                         "address %#x at pc %#x.\n",
@@ -349,6 +344,14 @@ TLB::translate(const RequestPtr &req,
                 } else {
                     wrMisses++;
                 }
+                // multi-level TLB
+                // if it is DTB, just return
+                /*
+                if (!last_level) {
+                        need_to_take_care = true;
+                        return NoFault;
+                }
+                */
                 if (FullSystem) {
                     Fault fault = walker->start(tc, translation, req, mode);
                     if (timing || fault != NoFault) {

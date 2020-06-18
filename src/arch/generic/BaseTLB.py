@@ -41,3 +41,4 @@ class BaseTLB(SimObject):
     # modifications for multi-levle TLB
     last_level = Param.Bool("Is it last level")
     upper_tlb = Param.UInt64("Pointer to upper level TLB")
+    #need_to_take_care = Param.Bool("Was it a miss at DTB")
