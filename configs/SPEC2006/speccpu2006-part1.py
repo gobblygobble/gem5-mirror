@@ -368,7 +368,7 @@ else:
     # add cache?
     
 # hard-coded itb / dtb options
-system.cpu[i].itb.size = 6
+system.cpu[i].itb.size = 64
 system.cpu[i].dtb.size = 64
 system.cpu[i].dtb2.size = options.l2dtlb_size
 system.cpu[i].itb.last_level = True
