@@ -11,8 +11,8 @@
 build/X86/gem5.opt configs/SPEC2006/speccpu2006-part1.py --benchmark=bzip2 --cpu-type="AtomicSimpleCPU" --caches --l2dtlb_size=256
 build/X86/gem5.opt configs/SPEC2006/speccpu2006-part1.py --benchmark=soplex --cpu-type="AtomicSimpleCPU" --caches --l2dtlb_size=256
 <NO CHANGE - SINGLE DTLB>
-bzip2:  
-soplex: 
+bzip2:  COMPLETE + SAVED FILE
+soplex: COMPLETE + SAVED FILE
 <CHANGED - MULTI-LEVEL DTLB>
 ============================== PART 2 ==============================
 ?
