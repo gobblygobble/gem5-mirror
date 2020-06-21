@@ -75,6 +75,11 @@ namespace X86ISA
 
         void setConfigAddress(uint32_t addr);
 
+        // WHAT?
+        //int associativity;
+        //std::vector<X86ISA::TLB *> *UnifiedTLB;
+        //bool need_init;
+
       protected:
 
         EntryList::iterator lookupIt(Addr va, bool update_lru = true);
@@ -94,7 +99,7 @@ namespace X86ISA
         uint32_t size;
 
         std::vector<TlbEntry> tlb;
-
+        Params old_params;
         EntryList freeList;
 
         TlbEntryTrie trie;

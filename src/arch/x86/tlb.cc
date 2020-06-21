@@ -41,6 +41,7 @@
 
 #include <cstring>
 #include <memory>
+#include <cstdlib> //calloc()
 
 #include "arch/x86/faults.hh"
 #include "arch/x86/insts/microldstop.hh"
@@ -65,6 +66,7 @@ TLB::TLB(const Params *p)
     if (!size)
         fatal("TLBs must have a non-zero size.\n");
 
+    associativity = p->associativity;
     for (int x = 0; x < size; x++) {
         tlb[x].trieHandle = NULL;
         freeList.push_back(&tlb[x]);
@@ -72,6 +74,8 @@ TLB::TLB(const Params *p)
 
     walker = p->walker;
     walker->setTLB(this);
+
+    old_params = *p;
 }
 
 void
@@ -264,6 +268,47 @@ TLB::translate(const RequestPtr &req,
         ThreadContext *tc, Translation *translation,
         Mode mode, bool &delayedResponse, bool timing)
 {
+
+    /* Here, we set UnifiedTLB  of DTB2 if it is DTB's first time accessing */
+    if (need_init) {
+        controller->UnifiedTLB = (std::vector<BaseTLB *> *)new std::vector<X86ISA::TLB *>();
+        
+        assert(controller->associativity != 1);
+        for (unsigned int x = 0; x < controller->associativity; x++) {
+            /*
+            TLB *newTLB = (TLB *)calloc(1, sizeof(TLB));
+            memcpy(newTLB, controller, sizeof(TLB));
+            newTLB->associativity = 1;
+            newTLB->size = ((TLB *)controller)->size / controller->associativity;
+            newTLB->controller = nullptr;
+            newTLB->need_init = false;
+            newTLB->last_level = true;
+            // reset list/vector
+            newTLB->tlb = std::vector<TlbEntry>();
+            newTLB->freeList = std::list<TlbEntry *>();
+            for (int x = 0; x < size; x++) {
+                newTLB->tlb[x].trieHandle = NULL;
+                newTLB->freeList.push_back(&tlb[x]);
+            }
+            //newTLB->walker = new X86ISA::Walker();
+            //newTLB->walker->setTLB(newTLB);
+            controller->UnifiedTLB->push_back(newTLB);
+            */
+            Params new_params = ((TLB *)controller)->old_params;
+            new_params.associativity = 1;
+            new_params.size = ((TLB *)controller)->size / controller->associativity;
+            new_params.controller = 0;
+            new_params.need_init = false;
+            //new_params.last_level = true;
+            new_params.name = "system.cpu.dtb2." + std::to_string(x);
+            //new_params.upper_tlb = (uint64_t)controller;
+            TLB *newTLB = new TLB(&new_params);newTLB->last_level = true;
+            newTLB->last_level = true;
+            newTLB->upper_tlb = controller;
+            controller->UnifiedTLB->push_back(newTLB);
+        }
+        need_init = false;
+    }
     Request::Flags flags = req->getFlags();
     int seg = flags & SegmentFlagMask;
     bool storeCheck = flags & (StoreCheck << FlagShift);
@@ -345,13 +390,18 @@ TLB::translate(const RequestPtr &req,
                     wrMisses++;
                 }
                 // multi-level TLB
-                // if it is DTB, just return
-                /*
+                // if it is DTB, just return after letting lower level handle
+                
                 if (!last_level) {
-                        need_to_take_care = true;
-                        return NoFault;
+                    unsigned int masknum = controller->associativity - 1;
+                    assert(masknum);
+                    unsigned int num = (vaddr & (masknum << 12)) >> 12;
+                    TLB *correct_tlb = (TLB *)((*controller->UnifiedTLB)[num]);
+                    correct_tlb->translate(req, tc, translation, mode,
+                                            delayedResponse, timing);
+                    return NoFault;
                 }
-                */
+                
                 if (FullSystem) {
                     Fault fault = walker->start(tc, translation, req, mode);
                     if (timing || fault != NoFault) {

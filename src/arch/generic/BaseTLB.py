@@ -38,7 +38,11 @@ class BaseTLB(SimObject):
     # Ports to connect with other TLB levels
     slave  = VectorSlavePort("Port closer to the CPU side")
     master = MasterPort("Port closer to memory side")
-    # modifications for multi-levle TLB
+    # modifications for multi-level TLB
     last_level = Param.Bool("Is it last level")
     upper_tlb = Param.UInt64("Pointer to upper level TLB")
     #need_to_take_care = Param.Bool("Was it a miss at DTB")
+    controller = Param.UInt64(0, "Pointer to L2 DTLB controller for DTLB")
+    associativity = Param.Unsigned("Associativity of L2 DTLB")
+    UnifiedTLB = Param.UInt64("Pointer to L2 DTLB's set associative TLBs")
+    need_init = Param.Bool("Does the UnifiedTLB need initializing?")

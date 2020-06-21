@@ -377,6 +377,15 @@ system.cpu[i].dtb2.last_level = True
 system.cpu[i].itb.upper_tlb = 0
 system.cpu[i].dtb.upper_tlb = 0
 system.cpu[i].dtb2.upper_tlb = 0
+system.cpu[i].itb.associativity = 1
+system.cpu[i].dtb.associativity = 1
+system.cpu[i].dtb2.associativity = 2
+system.cpu[i].itb.UnifiedTLB = 0
+system.cpu[i].dtb.UnifiedTLB = 0
+system.cpu[i].dtb2.UnifiedTLB = 0
+system.cpu[i].itb.need_init = False
+system.cpu[i].dtb.need_init = True
+system.cpu[i].dtb2.need_init = False
 
 root = Root(full_system = False, system = system)
 Simulation.run(options, root, system, FutureClass)
