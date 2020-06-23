@@ -92,7 +92,7 @@ namespace X86ISA
 
       protected:
         uint32_t size;
-
+        uint32_t associativity;
         std::vector<TlbEntry> tlb;
         // save old params at first constructor in DTB2,
         // to make DTB2's set-associative caches

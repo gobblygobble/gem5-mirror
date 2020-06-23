@@ -96,10 +96,6 @@ SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,
     itb->need_init = false;
     dtb->need_init = true;
     dtb2->need_init = true;
-    // set associativity for L2 TLB here for now
-    itb->associativity = 1;
-    dtb->associativity = 1;
-    dtb2->associativity = 2;
 }
 
 SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,

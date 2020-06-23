@@ -102,7 +102,6 @@ class BaseTLB : public SimObject
     bool last_level;
     BaseTLB *upper_tlb;
     BaseTLB *controller;
-    int associativity;
     std::vector<BaseTLB *> *UnifiedTLB;
     bool need_init;
     /**

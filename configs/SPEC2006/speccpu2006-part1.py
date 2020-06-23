@@ -123,6 +123,7 @@ def get_processes(options):
 
 parser = optparse.OptionParser()
 parser.add_option('--l2dtlb_size', type=int)
+parser.add_option('--l2dtlb_assoc', type=int)
 
 Options.addCommonOptions(parser)
 Options.addSEOptions(parser)
@@ -379,7 +380,7 @@ system.cpu[i].dtb.upper_tlb = 0
 system.cpu[i].dtb2.upper_tlb = 0
 system.cpu[i].itb.associativity = 1
 system.cpu[i].dtb.associativity = 1
-system.cpu[i].dtb2.associativity = 2
+system.cpu[i].dtb2.associativity = options.l2dtlb_assoc
 system.cpu[i].itb.UnifiedTLB = 0
 system.cpu[i].dtb.UnifiedTLB = 0
 system.cpu[i].dtb2.UnifiedTLB = 0

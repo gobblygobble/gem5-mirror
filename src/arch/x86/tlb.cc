@@ -61,14 +61,14 @@ namespace X86ISA {
 
 TLB::TLB(const Params *p)
     : BaseTLB(p), configAddress(0), size(p->size),
-      tlb(size), lruSeq(0), m5opRange(p->system->m5opRange())
+      associativity(p->associativity), tlb(size),
+      lruSeq(0), m5opRange(p->system->m5opRange())
 {
     /* Now DTB2 can accept 0 when single-level TLB is desired
     if (!size)
         fatal("TLBs must have a non-zero size.\n");
     */
 
-    associativity = p->associativity;
     for (int x = 0; x < size; x++) {
         tlb[x].trieHandle = NULL;
         freeList.push_back(&tlb[x]);
@@ -412,11 +412,11 @@ TLB::translate(const RequestPtr &req,
     if (need_init && (((TLB *)controller)->size != 0)) {
         controller->UnifiedTLB = (std::vector<BaseTLB *> *)new std::vector<X86ISA::TLB *>();
         
-        assert(controller->associativity != 1);
-        for (unsigned int x = 0; x < controller->associativity; x++) {
+        assert(((X86ISA::TLB *)controller)->associativity != 1);
+        for (unsigned int x = 0; x < ((X86ISA::TLB *)controller)->associativity; x++) {
             Params new_params = ((TLB *)controller)->old_params;
             new_params.associativity = 1;
-            new_params.size = ((TLB *)controller)->size / controller->associativity;
+            new_params.size = ((TLB *)controller)->size / ((X86ISA::TLB *)controller)->associativity;
             new_params.controller = 0;
             new_params.need_init = false;
             //new_params.last_level = true;
@@ -518,7 +518,7 @@ TLB::translate(const RequestPtr &req,
                 // if it is DTB, just return after letting lower level handle
                 if (!last_level) {
                     // DTB2 should call its set-associative TLBs here
-                    unsigned int masknum = controller->associativity - 1;
+                    unsigned int masknum = ((X86ISA::TLB *)controller)->associativity - 1;
                     assert(masknum);
                     unsigned int num = (vaddr & (masknum << 12)) >> 12;
                     TLB *correct_tlb = (TLB *)((*controller->UnifiedTLB)[num]);
