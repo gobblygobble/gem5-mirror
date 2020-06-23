@@ -75,11 +75,6 @@ namespace X86ISA
 
         void setConfigAddress(uint32_t addr);
 
-        // WHAT?
-        //int associativity;
-        //std::vector<X86ISA::TLB *> *UnifiedTLB;
-        //bool need_init;
-
       protected:
 
         EntryList::iterator lookupIt(Addr va, bool update_lru = true);
@@ -99,6 +94,8 @@ namespace X86ISA
         uint32_t size;
 
         std::vector<TlbEntry> tlb;
+        // save old params at first constructor in DTB2,
+        // to make DTB2's set-associative caches
         Params old_params;
         EntryList freeList;
 
@@ -118,6 +115,11 @@ namespace X86ISA
         Fault translate(const RequestPtr &req, ThreadContext *tc,
                 Translation *translation, Mode mode,
                 bool &delayedResponse, bool timing);
+        // additional functions for implementing multi-level TLB
+        Fault translateLowerLevel(const RequestPtr &req, ThreadContext *tc,
+                Translation *translation, Mode mode,
+                bool &delayedResponse, bool timing);
+        void sendEntryToHigherLevel(Addr vpn, TlbEntry &entry, bool fromMemory);
 
       public:
 
@@ -135,6 +137,44 @@ namespace X86ISA
             const RequestPtr &req, ThreadContext *tc,
             Translation *translation, Mode mode) override;
 
+        // public functions for implementing multi-level TLB
+        void evictSecondLRU();
+        TlbEntry findLRU();
+
+        void incrementRdAccesses()
+        {
+            rdAccesses++;
+        }
+
+        void incrementWrAccesses()
+        {
+            wrAccesses++;
+        }
+
+        void incrementRdMisses()
+        {
+            rdMisses++;
+        }
+
+        void incrementWrMisses()
+        {
+            wrMisses++;
+        }
+
+        EntryList getFreeList()
+        {
+            return freeList;
+        }
+
+        std::vector<TlbEntry> getTlb()
+        {
+            return tlb;
+        }
+
+        TlbEntryTrie getTrie()
+        {
+          return trie;
+        }
         /**
          * Do post-translation physical address finalization.
          *
