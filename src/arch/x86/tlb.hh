@@ -93,13 +93,15 @@ namespace X86ISA
       protected:
         uint32_t size;
         uint32_t associativity;
-        std::vector<TlbEntry> tlb;
-        // save old params at first constructor in DTB2,
-        // to make DTB2's set-associative caches
-        Params old_params;
-        EntryList freeList;
+        uint32_t index_bits;
+        std::vector<TlbEntryTrie> trieVector;
+        std::vector<std::vector <TlbEntry> > tlbVector;
+        std::vector<EntryList> freeListVector;
 
-        TlbEntryTrie trie;
+        //TlbEntryTrie trie;
+        //std::vector<TlbEntry> tlb;
+        //EntryList freeList;
+        
         uint64_t lruSeq;
 
         AddrRange m5opRange;
@@ -115,15 +117,11 @@ namespace X86ISA
         Fault translate(const RequestPtr &req, ThreadContext *tc,
                 Translation *translation, Mode mode,
                 bool &delayedResponse, bool timing);
-        // additional functions for implementing multi-level TLB
-        Fault translateLowerLevel(const RequestPtr &req, ThreadContext *tc,
-                Translation *translation, Mode mode,
-                bool &delayedResponse, bool timing);
-        void sendEntryToHigherLevel(Addr vpn, TlbEntry &entry, bool fromMemory);
 
       public:
 
-        void evictLRU();
+        void evictLRU(Addr vaddr);
+        uint32_t getIndex(Addr vaddr);
 
         uint64_t
         nextSeq()
@@ -137,44 +135,6 @@ namespace X86ISA
             const RequestPtr &req, ThreadContext *tc,
             Translation *translation, Mode mode) override;
 
-        // public functions for implementing multi-level TLB
-        void evictSecondLRU();
-        TlbEntry findLRU();
-
-        void incrementRdAccesses()
-        {
-            rdAccesses++;
-        }
-
-        void incrementWrAccesses()
-        {
-            wrAccesses++;
-        }
-
-        void incrementRdMisses()
-        {
-            rdMisses++;
-        }
-
-        void incrementWrMisses()
-        {
-            wrMisses++;
-        }
-
-        EntryList getFreeList()
-        {
-            return freeList;
-        }
-
-        std::vector<TlbEntry> getTlb()
-        {
-            return tlb;
-        }
-
-        TlbEntryTrie getTrie()
-        {
-          return trie;
-        }
         /**
          * Do post-translation physical address finalization.
          *

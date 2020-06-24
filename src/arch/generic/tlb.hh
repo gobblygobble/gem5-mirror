@@ -99,11 +99,7 @@ class BaseTLB : public SimObject
     {
         panic("Not implemented.\n");
     }
-    bool last_level;
-    BaseTLB *upper_tlb;
-    BaseTLB *controller;
-    std::vector<BaseTLB *> *UnifiedTLB;
-    bool need_init;
+
     /**
      * Do post-translation physical address finalization.
      *
