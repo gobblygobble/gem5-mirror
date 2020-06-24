@@ -1,11 +1,11 @@
 
 ---------- Begin Simulation Statistics ----------
 final_tick                               122354952000                       # Number of ticks from beginning of simulation (restored from checkpoints and never reset)
-host_inst_rate                                 191235                       # Simulator instruction rate (inst/s)
-host_mem_usage                                 783720                       # Number of bytes of host memory used
-host_op_rate                                   344128                       # Simulator op (including micro ops) rate (op/s)
-host_seconds                                   275.05                       # Real time elapsed on the host
-host_tick_rate                              444841665                       # Simulator tick rate (ticks/s)
+host_inst_rate                                 180572                       # Simulator instruction rate (inst/s)
+host_mem_usage                                 783716                       # Number of bytes of host memory used
+host_op_rate                                   324938                       # Simulator op (including micro ops) rate (op/s)
+host_seconds                                   291.30                       # Real time elapsed on the host
+host_tick_rate                              420036484                       # Simulator tick rate (ticks/s)
 sim_freq                                 1000000000000                       # Frequency of simulated ticks
 sim_insts                                    52599775                       # Number of instructions simulated
 sim_ops                                      94653261                       # Number of ops (including micro ops) simulated
@@ -32,10 +32,10 @@ system.cpu.dtb.rdAccesses                    18397275                       # TL
 system.cpu.dtb.rdMisses                         79324                       # TLB misses on read requests
 system.cpu.dtb.wrAccesses                     6656940                       # TLB accesses on write requests
 system.cpu.dtb.wrMisses                         12200                       # TLB misses on write requests
-system.cpu.dtb2.rdAccesses                      79324                       # TLB accesses on read requests
-system.cpu.dtb2.rdMisses                        46373                       # TLB misses on read requests
-system.cpu.dtb2.wrAccesses                      12200                       # TLB accesses on write requests
-system.cpu.dtb2.wrMisses                         5026                       # TLB misses on write requests
+system.cpu.dtb2.rdAccesses                          0                       # TLB accesses on read requests
+system.cpu.dtb2.rdMisses                            0                       # TLB misses on read requests
+system.cpu.dtb2.wrAccesses                          0                       # TLB accesses on write requests
+system.cpu.dtb2.wrMisses                            0                       # TLB misses on write requests
 system.cpu.fetch2.amo_instructions                  0                       # Number of memory atomic instructions successfully decoded
 system.cpu.fetch2.fp_instructions                   0                       # Number of floating point instructions successfully decoded
 system.cpu.fetch2.int_instructions                 11                       # Number of integer instructions successfully decoded
