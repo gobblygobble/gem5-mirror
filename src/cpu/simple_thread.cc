@@ -83,6 +83,13 @@ SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,
 {
     clearArchRegs();
     quiesceEvent = new EndQuiesceEvent(this);
+    // necessary?
+    itb->lower_tlb = nullptr;
+    dtb->lower_tlb = dtb2;
+    dtb2->lower_tlb = nullptr;
+    itb->upper_tlb = nullptr;
+    dtb->upper_tlb = nullptr;
+    dtb2->upper_tlb = dtb;
 }
 
 SimpleThread::SimpleThread(BaseCPU *_cpu, int _thread_num, System *_sys,
