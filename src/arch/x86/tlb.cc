@@ -66,9 +66,12 @@ TLB::TLB(const Params *p)
     // 0 means fully associative
     if (associativity == 0)
         associativity = size;
+    if (size == 0)
+        associativity = 1;
+    
     index_bits = 0;
     int counter = size / associativity;
-    while (counter != 1) {
+    while (counter > 1) {
         index_bits++;
         counter /= 2;
     }
@@ -108,7 +111,92 @@ TLB::getIndex(Addr vaddr)
     return ind;
 }
 
+std::list<TlbEntry *> *
+TLB::getFreeList(Addr vaddr)
+{
+    uint32_t ind = getIndex(vaddr);
+    return &freeListVector[ind];
+}
+
+std::vector<TlbEntry> *
+TLB::getTlb(Addr vaddr)
+{
+    uint32_t ind = getIndex(vaddr);
+    return &tlbVector[ind];
+}
+
+TlbEntryTrie *
+TLB::getTrie(Addr vaddr)
+{
+    uint32_t ind = getIndex(vaddr);
+    return &trieVector[ind];
+}
+
 void
+TLB::sendEntryToHigherLevel(Addr vpn, TlbEntry &entry, bool fromMemory)
+{
+    // boolMemory shows if this entry was brought in from memory (true)
+    // or if it is just being sent to higher level from DTB2 (false)
+    // object calling this function should be DTB2
+    X86ISA::TLB *dtb = myUpper();
+    std::list<TlbEntry *> *dtb_freelist = dtb->getFreeList(vpn);
+    if (fromMemory) {
+        if (dtb_freelist->empty()) {
+            // if upper TLB (L1) is full,
+            // we evict its LRU victim and bring it here (L2)
+            TlbEntry victim = dtb->evictLRU(vpn);
+            // 1. add victim from L1 here (L2)
+            insert(victim.vaddr, victim);
+            // 2. add entry to L1
+            dtb->insert(vpn, entry);
+        }
+        else {
+            // if upper TLB (L1) is not full,
+            // just insert it and finish
+            dtb->insert(vpn, entry);
+        }
+        return;
+    }
+    // reaching here means fromMemory == false
+    assert(!fromMemory);
+    if (dtb_freelist->empty()) {
+        // if upper TLB (L1) is full,
+        // we evict its LRU victim and bring it here (L2)
+        // we want to 'swap' entries of L1 and L2
+        TlbEntry victim = dtb->evictLRU(vpn);
+        // 1. insert victim entry to L2
+        insert(victim.vaddr, victim);
+        // 2. insert entry to upper TLB (L1)
+        dtb->insert(vpn, entry);
+        // 3. find entry from L2 and remove it
+        uint32_t ind = getIndex(vpn);
+        for (unsigned x = 0; x < size / associativity; x++) {
+            if (tlbVector[ind][x].vaddr == entry.vaddr && tlbVector[ind][x].trieHandle) {
+                trieVector[ind].remove(tlbVector[ind][x].trieHandle);
+                tlbVector[ind][x].trieHandle = NULL;
+                freeListVector[ind].push_back(&tlbVector[ind][x]);
+                break;
+            }
+        }
+    }
+    else {
+        // if upper TLB (L1) is not full,
+        // 1. insert it to upper TLB (L1)
+        dtb->insert(vpn, entry);
+        // 2. find entry from L2 and remove it
+        uint32_t ind = getIndex(vpn);
+        for (unsigned x = 0; x < size / associativity; x++) {
+            if (tlbVector[ind][x].vaddr == entry.vaddr && tlbVector[ind][x].trieHandle) {
+                trieVector[ind].remove(tlbVector[ind][x].trieHandle);
+                tlbVector[ind][x].trieHandle = NULL;
+                freeListVector[ind].push_back(&tlbVector[ind][x]);
+                break;
+            }
+        }
+    }
+}
+
+TlbEntry
 TLB::evictLRU(Addr vaddr)
 {
     // Find the entry with the lowest (and hence least recently updated)
@@ -126,6 +214,7 @@ TLB::evictLRU(Addr vaddr)
     trieVector[ind].remove(tlbVector[ind][lru].trieHandle);
     tlbVector[ind][lru].trieHandle = NULL;
     freeListVector[ind].push_back(&tlbVector[ind][lru]);
+    return tlbVector[ind][lru];
 }
 
 TlbEntry *
@@ -388,6 +477,14 @@ TLB::translate(const RequestPtr &req,
                 } else {
                     wrMisses++;
                 }
+                // miss in TLB.
+                // if DTB, request to DTB2
+                // if ITB/DTB2, proceed as usual
+                if (myLower() && myLower()->size) {
+                    // DTB
+                    return myLower()->translate(req, tc, translation, mode,
+                                                delayedResponse, timing);
+                }
                 if (FullSystem) {
                     Fault fault = walker->start(tc, translation, req, mode);
                     if (timing || fault != NoFault) {
@@ -415,10 +512,24 @@ TLB::translate(const RequestPtr &req,
                         Addr alignedVaddr = p->pTable->pageAlign(vaddr);
                         DPRINTF(TLB, "Mapping %#x to %#x\n", alignedVaddr,
                                 pte->paddr);
-                        entry = insert(alignedVaddr, TlbEntry(
-                                p->pTable->pid(), alignedVaddr, pte->paddr,
-                                pte->flags & EmulationPageTable::Uncacheable,
-                                pte->flags & EmulationPageTable::ReadOnly));
+                        if (myUpper()) {
+                            // DTB2 right now
+                            // miss in DTB, misw in DTB2, 
+                            // brought in from memory
+                            entry = new TlbEntry(
+                                    p->pTable->pid(), alignedVaddr, pte->paddr,
+                                    pte->flags & EmulationPageTable::Uncacheable,
+                                    pte->flags & EmulationPageTable::ReadOnly);
+                            Addr vpn = (entry->vaddr) & ~mask(entry->logBytes);
+                            sendEntryToHigherLevel(vpn, *entry, true);
+                        }
+                        else {
+                            // ITB right now
+                            entry = insert(alignedVaddr, TlbEntry(
+                                    p->pTable->pid(), alignedVaddr, pte->paddr,
+                                    pte->flags & EmulationPageTable::Uncacheable,
+                                    pte->flags & EmulationPageTable::ReadOnly));
+                        }
                     }
                     DPRINTF(TLB, "Miss was serviced.\n");
                 }
@@ -443,6 +554,13 @@ TLB::translate(const RequestPtr &req,
                 // fault that reflects that happening.
                 return std::make_shared<PageFault>(vaddr, true, Write, inUser,
                                                    false);
+            }
+
+            if (myUpper()) {
+                // DTB2 right now
+                // miss in DTB, hit in DTB2
+                Addr vpn = (entry->vaddr) & ~mask(entry->logBytes);
+                sendEntryToHigherLevel(vpn, *entry, false);
             }
 
             Addr paddr = entry->paddr | (vaddr & mask(entry->logBytes));
