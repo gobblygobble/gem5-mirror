@@ -164,9 +164,11 @@ TLB::sendEntryToHigherLevel(Addr vpn, TlbEntry &entry, bool fromMemory)
         // we evict its LRU victim and bring it here (L2)
         // we want to 'swap' entries of L1 and L2
         TlbEntry victim = dtb->evictLRU(vpn);
-        // 1. insert entry to upper TLB (L1)
+        // 1. insert victim entry to L2
+        insert(victim.vaddr, victim);
+        // 2. insert entry to upper TLB (L1)
         dtb->insert(vpn, entry);
-        // 2. find entry from L2 and remove it
+        // 3. find entry from L2 and remove it
         uint32_t ind = getIndex(vpn);
         for (unsigned x = 0; x < size / associativity; x++) {
             if (tlbVector[ind][x].vaddr == entry.vaddr && tlbVector[ind][x].trieHandle) {
@@ -176,8 +178,6 @@ TLB::sendEntryToHigherLevel(Addr vpn, TlbEntry &entry, bool fromMemory)
                 break;
             }
         }
-        // 3. insert victim entry to L2
-        insert(victim.vaddr, victim);
     }
     else {
         // if upper TLB (L1) is not full,
@@ -633,6 +633,8 @@ TLB::regStats()
         .desc("TLB misses on write requests");
 
 }
+
+// TODO: ASK ABOUT SERIALIZE AND UNSERIALIZE FUNCTIONS IN Q&A
 
 void
 TLB::serialize(CheckpointOut &cp) const
