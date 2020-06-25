@@ -98,10 +98,6 @@ namespace X86ISA
         std::vector<std::vector <TlbEntry> > tlbVector;
         std::vector<EntryList> freeListVector;
 
-        //TlbEntryTrie trie;
-        //std::vector<TlbEntry> tlb;
-        //EntryList freeList;
-        
         uint64_t lruSeq;
 
         AddrRange m5opRange;
@@ -119,9 +115,14 @@ namespace X86ISA
                 bool &delayedResponse, bool timing);
 
       public:
-
-        void evictLRU(Addr vaddr);
+        // modified function
+        TlbEntry evictLRU(Addr vaddr);
+        // new functions
         uint32_t getIndex(Addr vaddr);
+        std::list<TlbEntry *> *getFreeList(Addr vaddr);
+        std::vector<TlbEntry> *getTlb(Addr vaddr);
+        TlbEntryTrie *getTrie(Addr vaddr);
+        void sendEntryToHigherLevel(Addr vpn, TlbEntry &entry, bool fromMemory);
 
         uint64_t
         nextSeq()
@@ -134,6 +135,18 @@ namespace X86ISA
         void translateTiming(
             const RequestPtr &req, ThreadContext *tc,
             Translation *translation, Mode mode) override;
+
+        TLB *
+        myLower()
+        {
+            return (TLB *)lower_tlb;
+        }
+
+        TLB *
+        myUpper()
+        {
+            return (TLB *)upper_tlb;
+        }
 
         /**
          * Do post-translation physical address finalization.
