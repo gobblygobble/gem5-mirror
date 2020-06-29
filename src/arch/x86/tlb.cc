@@ -66,8 +66,10 @@ TLB::TLB(const Params *p)
     // 0 means fully associative
     if (associativity == 0)
         associativity = size;
-    if (size == 0)
+    if (size == 0) {
         associativity = 1;
+        size = 1;
+    }
     
     index_bits = 0;
     int counter = size / associativity;
