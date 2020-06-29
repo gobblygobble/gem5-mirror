@@ -68,6 +68,10 @@ BaseTags::BaseTags(const Params *p)
       stats(*this)
 {
     registerExitCallback(new BaseTagsCallback(this));
+    
+    /* CS510 Final project part 2 */
+    cachePartitioningEnabled = false;
+    /* CS510 Final project part 2 */
 }
 
 ReplaceableEntry*
@@ -102,6 +106,7 @@ BaseTags::findBlock(Addr addr, bool is_secure) const
 void
 BaseTags::insertBlock(const PacketPtr pkt, CacheBlk *blk)
 {
+    /* ORIGINAL CODE START */
     assert(!blk->isValid());
 
     // Previous block, if existed, has been removed, and now we have
@@ -125,6 +130,15 @@ BaseTags::insertBlock(const PacketPtr pkt, CacheBlk *blk)
     // We only need to write into one tag and one data block.
     stats.tagAccesses += 1;
     stats.dataAccesses += 1;
+    /* ORIGINAL CODE END */
+
+    /* CS510 Final project part 2 *
+    assert(!blk->isValid());
+    MasterID master_id = pkt->req->masterId();
+    assert(master_id < system->maxMasters());
+    stats.occupancies[master_id]++;
+    
+    * CS510 Final project part 2 */
 }
 
 Addr

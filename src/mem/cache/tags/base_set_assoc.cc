@@ -60,6 +60,10 @@ BaseSetAssoc::BaseSetAssoc(const Params *p)
     if (blkSize < 4 || !isPowerOf2(blkSize)) {
         fatal("Block size must be at least 4 and a power of 2");
     }
+    
+    /* CS510 Final project part 2 */
+    cachePartitioningEnabled = true;
+    /* CS510 Final project part 2 */
 }
 
 void

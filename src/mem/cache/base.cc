@@ -119,6 +119,25 @@ BaseCache::BaseCache(const BaseCacheParams *p, unsigned blk_size)
     // forward snoops is overridden in init() once we can query
     // whether the connected master is actually snooping or not
 
+    /* CS510 Final project part 2 */
+    if (p->name == "system.l2") {
+        isL2cache = true;
+        boundary = p->boundary;
+        tags->isL2cache = isL2cache;
+        tags->boundary = boundary;
+        tags->cpu0_mids.push_back(6);
+        tags->cpu0_mids.push_back(7);
+        tags->cpu1_mids.push_back(11);
+        tags->cpu1_mids.push_back(12);
+    }
+    else {
+        isL2cache = false;
+        boundary = 0;
+        tags->isL2cache = isL2cache;
+        tags->boundary = boundary;
+    }
+    /* CS510 Final project part 2 */
+
     tempBlock = new TempCacheBlk(blkSize);
 
     tags->tagsInit();
@@ -1430,9 +1449,23 @@ BaseCache::allocateBlock(const PacketPtr pkt, PacketList &writebacks)
 
     // Find replacement victim
     std::vector<CacheBlk*> evict_blks;
+    /* ORIGINAL CODE *
     CacheBlk *victim = tags->findVictim(addr, is_secure, blk_size_bits,
                                         evict_blks);
+    * ORIGINAL CODE */
 
+    /* CS510 Final project part 2 */
+    CacheBlk *victim;
+    // if cache paritioning is enalbed for L2 cache,
+    // give information about the source master ID as well
+    if (tags->isL2cache && tags->cachePartitioningEnabled)
+        victim = tags->findVictimPartitioned(addr, is_secure, blk_size_bits,
+                                            evict_blks, pkt->req->masterId());
+    else
+        victim = tags->findVictim(addr, is_secure, blk_size_bits,
+                                  evict_blks);
+    /* CS510 Final project part 2 */
+    
     // It is valid to return nullptr if there is no victim
     if (!victim)
         return nullptr;

@@ -57,6 +57,9 @@ class L1Cache(Cache):
     response_latency = 2
     mshrs = 4
     tgts_per_mshr = 20
+    # CS510 Final project part 2 #
+    boundary = 0
+    # CS510 Final project part 2 #
 
 class L1_ICache(L1Cache):
     is_read_only = True
@@ -74,6 +77,9 @@ class L2Cache(Cache):
     mshrs = 20
     tgts_per_mshr = 12
     write_buffers = 8
+    # CS510 Final project part 2 #
+    # boundary?
+    # CS510 Final project part 2 #
 
 class IOCache(Cache):
     assoc = 8
@@ -83,6 +89,9 @@ class IOCache(Cache):
     mshrs = 20
     size = '1kB'
     tgts_per_mshr = 12
+    # CS510 Final project part 2 #
+    boundary = 0
+    # CS510 Final project part 2 #
 
 class PageTableWalkerCache(Cache):
     assoc = 2
@@ -92,6 +101,9 @@ class PageTableWalkerCache(Cache):
     mshrs = 10
     size = '1kB'
     tgts_per_mshr = 12
+    # CS510 Final project part 2 #
+    boundary = 0
+    # CS510 Final project part 2 #
 
     # the x86 table walker actually writes to the table-walker cache
     if buildEnv['TARGET_ISA'] == 'x86':

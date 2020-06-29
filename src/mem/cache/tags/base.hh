@@ -161,6 +161,21 @@ class BaseTags : public ClockedObject
     typedef BaseTagsParams Params;
     BaseTags(const Params *p);
 
+    /* CS510 Final project part 2 */
+    bool isL2cache;
+    bool cachePartitioningEnabled;
+    unsigned int boundary;
+    std::vector<unsigned int> cpu0_mids;
+    std::vector<unsigned int> cpu1_mids;
+    virtual CacheBlk* findVictimPartitioned(Addr addr, const bool is_secure,
+                                 const std::size_t size,
+                                 std::vector<CacheBlk*>& evict_blks,
+                                 unsigned int srcMasterId)
+    {
+        return findVictim(addr, is_secure, size, evict_blks);
+    }
+    /* CS510 Final project part 2 */
+
     /**
      * Destructor.
      */

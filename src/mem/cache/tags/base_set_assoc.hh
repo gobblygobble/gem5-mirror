@@ -173,6 +173,9 @@ class BaseSetAssoc : public BaseTags
         const std::vector<ReplaceableEntry*> entries =
             indexingPolicy->getPossibleEntries(addr);
 
+        /* CS510 Final project part 2 */
+        /* CS510 Final project part 2 */
+
         // Choose replacement victim from replacement candidates
         CacheBlk* victim = static_cast<CacheBlk*>(replacementPolicy->getVictim(
                                 entries));
@@ -182,6 +185,45 @@ class BaseSetAssoc : public BaseTags
 
         return victim;
     }
+
+    /* CS510 Final project part 2 */
+    CacheBlk* findVictimPartitioned(Addr addr, const bool is_secure,
+    const std::size_t size, std::vector<CacheBlk*>& evict_blks,
+    unsigned int srcMasterId) override
+    {
+        // Get possible entries to be victimized
+        const std::vector<ReplaceableEntry*> entries =
+            indexingPolicy->getPossibleEntries(addr);
+
+        assert(isL2cache && cachePartitioningEnabled);
+        assert(boundary > 0);
+        
+        // I should add a part here where entries is modified, depending on ths srcMasterId
+        // (6, 7 -> first N & 11, 12 -> next 8-N)
+        std::vector<ReplaceableEntry *> new_entries;
+        // from core 0?
+        if (std::count(cpu0_mids.begin(), cpu0_mids.end(), srcMasterId))
+            new_entries = std::vector<ReplaceableEntry *>(entries.begin(), entries.begin() + boundary);
+        // from core 1?
+        else if (std::count(cpu1_mids.begin(), cpu1_mids.end(), srcMasterId))
+            new_entries = std::vector<ReplaceableEntry *>(entries.begin() + boundary, entries.end());
+        else {
+            // from neither? -> must be 0 (wbMasterId)
+            assert(srcMasterId == (unsigned)0);
+            // push anywhere
+            // here, blindly push into core 0's private section of L2 cache
+            new_entries = std::vector<ReplaceableEntry *>(entries.begin(), entries.begin() + boundary);
+        }
+        // Choose replacement victim from replacement candidates
+        //CacheBlk* victim = static_cast<CacheBlk*>(replacementPolicy->getVictim(entries));
+        CacheBlk* victim = static_cast<CacheBlk*>(replacementPolicy->getVictim(new_entries));
+
+        // There is only one eviction for this replacement
+        evict_blks.push_back(victim);
+
+        return victim;
+    }
+    /* CS510 Final project part 2 */
 
     /**
      * Insert the new block into the cache and update replacement data.

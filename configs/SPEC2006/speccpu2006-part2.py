@@ -196,6 +196,10 @@ parser = optparse.OptionParser()
 Options.addCommonOptions(parser)
 Options.addSEOptions(parser)
 
+# CS510 Final project part 2 #
+parser.add_option('--l2_boundary', type=int)
+# CS510 Final project part 2 #
+
 if '--ruby' in sys.argv:
     Ruby.define_options(parser)
 
@@ -381,6 +385,18 @@ else:
     CacheConfig.config_cache(options, system)
     MemConfig.config_mem(options, system)
     config_filesystem(system, options)
+
+# CS510 Final project part 2 #
+for i in range(np):
+    system.cpu[i].itb.associativity = 0
+    system.cpu[i].dtb.associativity = 0
+    system.cpu[i].dtb2.associativity = 0
+    system.cpu[i].itb.size = 64
+    system.cpu[i].dtb.size = 64
+    system.cpu[i].dtb2.size = 0
+    
+#system.l2cache.boundary = options.l2_boundary
+# CS510 Final project part 2 #
 
 root = Root(full_system = False, system = system)
 Simulation.run(options, root, system, FutureClass)

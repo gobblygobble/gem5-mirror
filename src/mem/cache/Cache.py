@@ -117,6 +117,11 @@ class BaseCache(ClockedObject):
          "Address range for the CPU-side port (to allow striping)")
 
     system = Param.System(Parent.any, "System we belong to")
+    
+    # CS510 Final project part 2 #
+    boundary = Param.Unsigned(1, "Where CPU1's associativity starts")
+    # boundary x -> 0~(x-1) for CPU0, x~7 for CPU1 [x : 8-x]
+    # CS510 Final project part 2 #
 
     # Determine if this cache sends out writebacks for clean lines, or
     # simply clean evicts. In cases where a downstream cache is mostly

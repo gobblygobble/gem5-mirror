@@ -102,6 +102,10 @@ class BaseCache : public ClockedObject
     };
 
   public:
+    /* CS510 Final project part 2 */
+    bool isL2cache;
+    unsigned int boundary;
+    /* CS510 Final project part 2 */
     /**
      * Reasons for caches to be blocked.
      */
