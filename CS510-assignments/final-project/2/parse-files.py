@@ -59,8 +59,8 @@ for filename in os.listdir(os.getcwd()):
                 print(file_string)
                 file_list = file_string.split(",")
                 if (int(file_list[5]) != int(file_list[1]) + int(file_list[2]) + int(file_list[3]) + int(file_list[4])):
-                    print("something wrong with file hit sum in {}".format(filename))
+                    print("something wrong with hit sum in {}".format(filename))
                 if (int(file_list[10]) != int(file_list[6]) + int(file_list[7]) + int(file_list[8]) + int(file_list[9])):
-                    print("something wrong with file hit sum in {}".format(filename))
+                    print("something wrong with miss sum in {}".format(filename))
                 file_string += '\n'
             wf.write(file_string)
